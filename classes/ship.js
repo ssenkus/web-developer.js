@@ -129,7 +129,11 @@ Ship.prototype.draw = function (context) {
 	
   }
   if (this.showFlameFront) {
-    context.beginPath();
+  
+  	  context.beginPath();
+context.font="30px Arial";
+context.strokeText("I quit!",50,50);
+      context.beginPath();
 	context.strokeStyle = "#ddd";
     context.moveTo(10, 0);
     context.lineTo(20, 20);
@@ -152,6 +156,7 @@ Ship.prototype.draw = function (context) {
       context.lineWidth = 2;
       context.strokeStyle = '#ddd';
       context.stroke();	
+
   }  
   
   if (this.shot) {
