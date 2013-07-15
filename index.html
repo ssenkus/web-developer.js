@@ -46,7 +46,9 @@
 		  ship.showFlameFront = true;
 			break;
 		case 32: // spacebar
-			ship.shot = true;
+			if (ship.shot) {
+			ship.shot = false;
+			} else { ship.shot = true;}
 			break;
         }
 		
