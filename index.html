@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Ship Sim Friction</title>
+	<title>Web Developer</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
       #canvas {
@@ -42,10 +42,14 @@
           thrust = 0.05;
           ship.showFlame = true;
           break;
-		case 40:
+		case 40:	//down
 		  ship.showFlameFront = true;
 			break;
+		case 32: // spacebar
+			ship.shot = true;
+			break;
         }
+		
       }, false);
 
       window.addEventListener('keyup', function () {
