@@ -1,100 +1,104 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-	<title>Web Developer</title>
-    <link rel="stylesheet" href="css/style.css">
-    <style>
-      #canvas {
-        background-color: #fff;
-      }
-    </style>
-  </head>
-  <body>
-    <canvas id="canvas" width="1200" height="500"></canvas>
-	<aside>left arrow/right arrow: rotate web dev, up to thrust, down to quit job, spacebar to toggle useless fireball.</aside>
+    <head>
+        <meta charset="utf-8">
+        <title>Web Developer</title>
+        <link rel="stylesheet" href="css/style.css">
+        <style>
+            #canvas {
+                background-color: #fff;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="canvas" width="1200" height="500"></canvas>
+        <aside>left arrow/right arrow: rotate web dev, up to thrust, down to quit job, spacebar to toggle useless fireball.</aside>
 
-    <script src="js/utils.js"></script>
-    <script src="classes/ship.js"></script>
-    <script>
-    window.onload = function () {
-      var canvas = document.getElementById('canvas'),
-          context = canvas.getContext('2d'),
-          ship = new Ship(),
-          vr = 0,
-          vx = 0,
-          vy = 0,
-          thrust = 0,
-          friction = 0.99;
+        <script src="js/utils.js"></script>
+        <script src="classes/spider.js"></script>
+        <script>
+            window.onload = function() {
+                var canvas = document.getElementById('canvas'),
+                        context = canvas.getContext('2d'),
+                        spider = new Spider(),
+                        vr = 0,
+                        vx = 0,
+                        vy = 0,
+                        thrust = 0,
+                        friction = 0.99,
+                        shot = false;
 
-      ship.x = canvas.width / 2;
-      ship.y = canvas.height / 2;
+                spider.x = canvas.width / 2;
+                spider.y = canvas.height / 2;
 
-      window.addEventListener('keydown', function (event) {
-        switch (event.keyCode) {
-        case 37:      //left
-          vr = -13;
-          break;
-        case 39:      //right
-          vr = 13;
-          break;
-        case 38:      //up
-          thrust = 0.05;
-          ship.showFlame = true;
-          break;
-		case 40:	//down
-		  ship.showFlameFront = true;
-			break;
-		case 32: // spacebar
-			if (ship.shot) {
-			ship.shot = false;
-			} else { ship.shot = true;}
-			break;
-        }
-		
-      }, false);
+                window.addEventListener('keydown', function(event) {
+                    switch (event.keyCode) {
+                        case 37:      //left
+                            vr = -13;
+                            break;
+                        case 39:      //right
+                            vr = 13;
+                            break;
+                        case 38:      //up
+                            thrust = 0.05;
+                            spider.showFlame = true;
+                            break;
+                        case 40:	//down
+                            spider.showFlameFront = true;
+                            break;
+                        case 32: // spacebar
+                            var fireball;
+                            fireball = new Fireball(context, spider);
+                            break;
+                    }
 
-      window.addEventListener('keyup', function () {
-        vr = 0;
-        thrust = 0;
-        ship.showFlame = false;
-		ship.showFlameFront = false;
-      }, false);
+                }, false);
 
-      (function drawFrame () {
-        window.requestAnimationFrame(drawFrame, canvas);
-        context.clearRect(0, 0, canvas.width, canvas.height);
+                window.addEventListener('keyup', function() {
+                    vr = 0;
+                    thrust = 0;
+                    spider.showFlame = false;
+                    spider.showFlameFront = false;
+                }, false);
 
-        ship.rotation += vr * Math.PI / 180;
-        var angle = ship.rotation,
-            ax = Math.cos(angle) * thrust,
-            ay = Math.sin(angle) * thrust,
-            left = 0,
-            right = canvas.width,
-            top = 0,
-            bottom = canvas.height;
+                (function drawFrame() {
+                    window.requestAnimationFrame(drawFrame, canvas);
+                    context.clearRect(0, 0, canvas.width, canvas.height);
 
-        vx += ax;
-        vy += ay;
-        vx *= friction;
-        vy *= friction;
-        ship.x += vx;
-        ship.y += vy;
+                    spider.rotation += vr * Math.PI / 180;
+                    var angle = spider.rotation,
+                            ax = Math.cos(angle) * thrust,
+                            ay = Math.sin(angle) * thrust,
+                            left = 0,
+                            right = canvas.width,
+                            top = 0,
+                            bottom = canvas.height;
 
-        //screen wrapping
-        if (ship.x - ship.width / 2 > right) {
-          ship.x = left - ship.width / 2;
-        } else if (ship.x + ship.width / 2 < left) {
-          ship.x = right + ship.width / 2;
-        }
-        if (ship.y - ship.height / 2 > bottom) {
-          ship.y = top - ship.height / 2;
-        } else if (ship.y < top - ship.height / 2) {
-          ship.y = bottom + ship.height / 2;
-        }
-        ship.draw(context);
-      }());
-    };
-    </script>
-  </body>
+                    vx += ax;
+                    vy += ay;
+                    vx *= friction;
+                    vy *= friction;
+                    spider.x += vx;
+                    spider.y += vy;
+
+                    //screen wrapping
+                    if (spider.x - spider.width / 2 > right) {
+                        spider.x = left - spider.width / 2;
+                    } else if (spider.x + spider.width / 2 < left) {
+                        spider.x = right + spider.width / 2;
+                    }
+                    if (spider.y - spider.height / 2 > bottom) {
+                        spider.y = top - spider.height / 2;
+                    } else if (spider.y < top - spider.height / 2) {
+                        spider.y = bottom + spider.height / 2;
+                    }
+                    spider.draw(context);
+
+
+                    spider.shoot(context);
+
+                }());
+            };
+        </script>
+    </body>
 </html>
