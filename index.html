@@ -25,11 +25,12 @@
                         vx = 0,
                         vy = 0,
                         thrust = 0,
-                        friction = 0.99,
-                        shot = false;
+                        friction = 0.99;
 
                 spider.x = canvas.width / 2;
                 spider.y = canvas.height / 2;
+
+
 
                 window.addEventListener('keydown', function(event) {
                     switch (event.keyCode) {
@@ -44,11 +45,11 @@
                             spider.showFlame = true;
                             break;
                         case 40:	//down
-                            spider.showFlameFront = true;
+                            spider.showQuit = true;
                             break;
                         case 32: // spacebar
-                            var fireball;
-                            fireball = new Fireball(context, spider);
+                            counter = 6;
+                            spider.shot = true;
                             break;
                     }
 
@@ -57,10 +58,11 @@
                 window.addEventListener('keyup', function() {
                     vr = 0;
                     thrust = 0;
-                    spider.showFlame = false;
-                    spider.showFlameFront = false;
+                    spider.showFlame = false;   
+                    spider.showQuit = false;
+                                        
                 }, false);
-
+var counter = 700;
                 (function drawFrame() {
                     window.requestAnimationFrame(drawFrame, canvas);
                     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -73,7 +75,7 @@
                             right = canvas.width,
                             top = 0,
                             bottom = canvas.height;
-
+                            
                     vx += ax;
                     vy += ay;
                     vx *= friction;
@@ -95,8 +97,8 @@
                     spider.draw(context);
 
 
-                    spider.shoot(context);
 
+                    if (spider.shot === true && spider.fireballCounter < 50) { spider.fireballCounter++; } else { spider.shot = false; spider.fireballCounter = 0;}
                 }());
             };
         </script>

@@ -7,6 +7,7 @@ function Spider() {
     this.showFlame = false;
     this.shot = false;
     this.posx = 30;
+    this.fireballCounter = 0;
 }
 
 
@@ -21,6 +22,7 @@ Spider.prototype.draw = function(context) {
         this.radius = 10;
     }
 
+    
     var body = new Body();
     context.save();
     context.translate(this.x, this.y);
@@ -177,21 +179,25 @@ Spider.prototype.draw = function(context) {
 
 
     }
-    if (this.showFlameFront) {
+    if (this.showQuit) {
 
         context.beginPath();
         context.font = "30px Arial";
         context.strokeText("I quit!", 50, 50);
     }
 
+    if (this.shot) {
+       
+        context.beginPath();
+        console.log(this.y);
+        context.arc((this.fireballCounter * 3) + 20, 0, 3, 0, 2 * Math.PI, false);
+        context.lineWidth = 2;
+        context.fillStyle = "#f60";
+        context.fill();
+        context.strokeStyle = '#f60';
+        context.stroke();
+        
+    }
+
     context.restore();
-};
-
-Spider.prototype.shoot = function(context) {
-
-    var fireball = new Fireball(shooter);
-
-
-
-
 };
