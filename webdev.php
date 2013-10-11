@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>Web Developer</title>
-        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>assets/webdev/css/style.css">
         <style>
             #canvas {
                 background-color: #fff;
@@ -14,57 +14,25 @@
         <canvas id="canvas" width="1200" height="500"></canvas>
         <aside>left arrow/right arrow: rotate web dev, up to thrust, down to quit job, spacebar to toggle useless fireball.</aside>
 
-        <script src="js/utils.js"></script>
-        <script src="classes/spider.js"></script>
+		<script src="<?php echo base_url(); ?>assets/webdev/js/utils.js"></script>
+        <script src="<?php echo base_url(); ?>assets/webdev/classes/spider.js"></script>
         <script>
-                            var balls = [], ball,
-                    gravity = 0.4;
             window.onload = function() {
                 var canvas = document.getElementById('canvas'),
-                    context = canvas.getContext('2d'),
-                    spider = new Spider(),
-                    vr = 0,
-                    vx = 0,
-                    vy = 0,
-                    thrust = 0,
-                    friction = 0.99;
+                        context = canvas.getContext('2d'),
+                        spider = new Spider(),
+                        vr = 0,
+                        vx = 0,
+                        vy = 0,
+                        thrust = 0,
+                        friction = 0.99;
+
+                spider.x = canvas.width / 2;
+                spider.y = canvas.height / 2;
 
 
 
-
-                function draw(ball) {
-                    
-                    ball.x += 2 * ball.dirX; //ball.vx;
-                    ball.y += 2 * ball.dirY; //ball.vy;
-                    if (ball.x - ball.radius > canvas.width ||
-                        ball.x + ball.radius < 0 ||
-                        ball.y - ball.radius > canvas.height ||
-                        ball.y + ball.radius < 0) {
-                    var index = balls.indexOf(ball);
-                    console.log(index)
-                        balls.splice(index, 1);
-                        /*
-                        ball.x = canvas.width / 2;
-                        ball.y = canvas.height;
-                        ball.vx = Math.random() * 12 - 10;
-                        ball.vy = Math.random() * -10 - 10;
-                        */
-                    }
-                    console.log(balls.length, Math.ceil(spider.x / 10), Math.ceil(ball.x /10));
-                    if (Math.ceil(spider.x / 10) - Math.ceil(ball.x / 10) > 100) {
-                        alert('collision ball');
-                    } else {
-                    ball.draw(context);
-                    }
-                }
-
-                function createBall() {
-                    var ball = new Ball(10, Math.random() * 0xff0000, spider, vx, vy);
-                    balls.push(ball);
-                    
-                }
-
-            window.addEventListener('keydown', function(event) {
+                window.addEventListener('keydown', function(event) {
                     switch (event.keyCode) {
                         case 37:      //left
                             vr = -13;
@@ -80,8 +48,8 @@
                             spider.showQuit = true;
                             break;
                         case 32: // spacebar
-                            createBall();
-
+                            counter = 6;
+                            spider.shot = true;
                             break;
                     }
 
@@ -90,16 +58,11 @@
                 window.addEventListener('keyup', function() {
                     vr = 0;
                     thrust = 0;
-                    spider.showFlame = false;
+                    spider.showFlame = false;   
                     spider.showQuit = false;
-
+                                        
                 }, false);
-
-
-                // initial spider position
-                spider.x = canvas.width / 2;
-                spider.y = canvas.height / 2;
-
+var counter = 700;
                 (function drawFrame() {
                     window.requestAnimationFrame(drawFrame, canvas);
                     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -112,7 +75,7 @@
                             right = canvas.width,
                             top = 0,
                             bottom = canvas.height;
-
+                            
                     vx += ax;
                     vy += ay;
                     vx *= friction;
@@ -133,10 +96,9 @@
                     }
                     spider.draw(context);
 
-                    balls.forEach(draw);
 
-                    
 
+                    if (spider.shot === true && spider.fireballCounter < 50) { spider.fireballCounter++; } else { spider.shot = false; spider.fireballCounter = 0;}
                 }());
             };
         </script>

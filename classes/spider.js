@@ -3,7 +3,7 @@ function Spider() {
     this.y = 0;
     this.width = 25;
     this.height = 20;
-    this.rotation = 0;
+    this.rotation = Math.PI * 0.5;
     this.showFlame = false;
     this.shot = false;
     this.posx = 30;
@@ -22,7 +22,7 @@ Spider.prototype.draw = function(context) {
         this.radius = 10;
     }
 
-    
+
     var body = new Body();
     context.save();
     context.translate(this.x, this.y);
@@ -116,16 +116,16 @@ Spider.prototype.draw = function(context) {
     context.moveTo(-4, -10);
     context.lineTo(-10, -17);
     context.lineTo(-16, -10);
-    context.stroke();    
+    context.stroke();
     context.beginPath();
     context.lineWidth = 2;
     context.strokeStyle = '#000';
     context.moveTo(-7, -8);
     context.lineTo(-9, -15);
     context.lineTo(-15, -8);
-    context.stroke();        
-    
-    
+    context.stroke();
+
+
     context.beginPath();
     context.lineWidth = 2;
     context.strokeStyle = '#000';
@@ -153,7 +153,7 @@ Spider.prototype.draw = function(context) {
     context.moveTo(-4, 10);
     context.lineTo(-10, 17);
     context.lineTo(-16, 10);
-    context.stroke();    
+    context.stroke();
     context.beginPath();
     context.lineWidth = 2;
     context.strokeStyle = '#000';
@@ -186,18 +186,64 @@ Spider.prototype.draw = function(context) {
         context.strokeText("I quit!", 50, 50);
     }
 
-    if (this.shot) {
-       
-        context.beginPath();
-        console.log(this.y);
-        context.arc((this.fireballCounter * 3) + 20, 0, 3, 0, 2 * Math.PI, false);
-        context.lineWidth = 2;
-        context.fillStyle = "#f60";
-        context.fill();
-        context.strokeStyle = '#f60';
-        context.stroke();
-        
-    }
-
     context.restore();
 };
+
+
+
+
+
+
+
+
+function Ball(radius, color, spider,vx,vy) {
+    if (radius === undefined) {
+        radius = 40;
+    }
+    if (color === undefined) {
+        color = "#ff0000";
+    }
+    var startCoordsX = spider.x;
+    var startCoordsY = spider.y;
+    this.x = startCoordsX;
+    this.y = startCoordsY + 10 * ((spider.rotation > 0) ? 1: -1) ;
+    this.dirX = vx;
+    this.dirY = vy;
+    this.radius = radius;
+    this.rotation = spider.rotation;
+    this.scaleX = 1;
+    this.scaleY = 1;
+    this.color = utils.parseColor(color);
+    this.lineWidth = 3;
+}
+
+Ball.prototype.draw = function(context) {
+    context.save();
+    context.translate(this.x, this.y);
+    context.rotate(this.rotation);
+    context.scale(this.scaleX, this.scaleY);
+
+    context.lineWidth = this.lineWidth;
+    context.fillStyle = this.color;
+    context.beginPath();
+    //x, y, radius, start_angle, end_angle, anti-clockwise
+    context.arc(0, 0, this.radius, 0, (Math.PI * 2), true);
+    context.closePath();
+    context.fill();
+    if (this.lineWidth > 0) {
+        context.stroke();
+    }
+    context.restore();
+};
+
+
+
+
+
+
+
+
+
+
+
+
